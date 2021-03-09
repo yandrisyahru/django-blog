@@ -3,6 +3,7 @@ from .models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def index(request):
+    categories = Category.objects.all()
     queryset = Post.objects.all()
     paginator = Paginator(queryset, 2)
     page_request_var = 'page'
@@ -14,6 +15,7 @@ def index(request):
     except EmptyPage:
         paginated_queryset = paginator.page(paginator.num_pages)
     context = {
+        'categories' : categories,
         'queryset' : paginated_queryset,
         'page_request_var' : page_request_var
     }
@@ -25,3 +27,11 @@ def blog(request, blog_id):
         'blog' : blog
     }
     return render (request, 'blog.html', context)
+
+def CategoryView(request, cats):
+    category_post = Post.objects.filter(categories__title__contains=cats)
+    context = {
+        'cats' : cats,
+        'category_post' : category_post
+    }
+    return render(request, 'categories.html', context)

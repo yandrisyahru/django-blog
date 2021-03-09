@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
     path('blog/<int:blog_id>', views.blog, name='blog'),
+    path('category/<str:cats>/', views.CategoryView, name='category'),
     path('tinymce/', include('tinymce.urls')),
 ]
 

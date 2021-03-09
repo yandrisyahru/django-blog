@@ -12,26 +12,29 @@
       <!-- Blog Entries Column -->
       <div class="col-md-8">
 
-        <h1 class="my-4">Myblog
+        <h1 class="my-4">{{cats}} Category
           <hr>
-          <small>Selamat datang di blog kami</small>
+          <small>Ada disini</small>
         </h1>
-
-        {% for obj in queryset %}
-        <!-- Blog Post -->
-        <div class="card mb-4">
-          <img class="card-img-top" src="{{obj.thumbnail.url}}" alt="Card image cap">
-          <div class="card-body">
-            <h2 class="card-title">{{obj.title}}</h2>
-            <p class="card-text">{{obj.description}}</p>
-            <a href="{{obj.get_absolute_url}}" class="btn btn-primary">Read More &rarr;</a>
-          </div>
-          <div class="card-footer text-muted">
-            Posted on {{obj.date|timesince}} ago by
-            <a href="#">{{obj.author}}</a>
-          </div>
-        </div>
-        {% endfor %}
+        {% if category_post %}
+            {% for obj in category_post %}
+            <!-- Blog Post -->
+            <div class="card mb-4">
+              <img class="card-img-top" src="{{obj.thumbnail.url}}" alt="Card image cap">
+              <div class="card-body">
+                <h2 class="card-title">{{obj.title}}</h2>
+                <p class="card-text">{{obj.description}}</p>
+                <a href="{{obj.get_absolute_url}}" class="btn btn-primary">Read More &rarr;</a>
+              </div>
+              <div class="card-footer text-muted">
+                Posted on {{obj.date|timesince}} ago by
+                <a href="#">{{obj.author}}</a>
+              </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <h2>Tidak ada blog</h2>
+        {% endif %}
 
         <!-- Pagination -->
         <ul class="pagination justify-content-center mb-4">
@@ -74,7 +77,7 @@
                 <ul class="list-unstyled mb-0">
                  <li>
                    {% for cat in categories %}
-                   <a href="{% url 'category' cat %}">{{cat}}</a>
+                   <a href="{% url 'category' %}">{{cat}}</a>
                    {% endfor %}
                  </li>
                 </ul>
