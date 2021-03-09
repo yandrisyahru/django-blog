@@ -1,6 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from .forms import CommentForm
 
 def index(request):
     categories = Category.objects.all()
@@ -23,8 +24,16 @@ def index(request):
 
 def blog(request, blog_id):
     blog = get_object_or_404(Post, id=blog_id)
+    form = CommentForm(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.instance.user = request.user
+            form.instance.post = blog
+            form.save()
+            return redirect('blog', blog_id=blog_id)
     context = {
-        'blog' : blog
+        'blog' : blog,
+        'form' : form,
     }
     return render (request, 'blog.html', context)
 
